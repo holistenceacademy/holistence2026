@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>HOLİSTENCE 2026 — Uluslararası Multidisipliner Bilim Kongresi</title>
 <meta name="description" content="HOLİSTENCE 2026 Uluslararası Multidisipliner Bilim Kongresi">
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400&family=Lato:wght@200;300;400;700&family=IM+Fell+English:ital@1&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400&family=Lato:wght@200;300;400;700&family=IM+Fell+English:ital@1&display=swap" rel="stylesheet">
 <style>
 :root{
   --gold:#C9A84C;--gold-l:#E8C97A;--gold-p:#F5E6C0;
@@ -84,36 +84,45 @@ canvas#stars{position:absolute;inset:0;z-index:0;}
   animation:fadeDown 1s ease 0.1s both;
 }
 .hero-badge::before,.hero-badge::after{content:"◆";font-size:6px;opacity:0.7;}
-.hero-year{
-  display:block;font-family:"Cormorant Garamond",serif;
-  font-size:clamp(88px,15vw,180px);font-weight:300;line-height:0.9;
-  background:linear-gradient(175deg,var(--gold-l) 0%,var(--gold) 45%,rgba(201,168,76,0.3) 100%);
-  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
-  animation:fadeUp 1.2s ease 0.2s both;
-}
+
 
 /* HOLİSTENCE animated title */
 .hero-name{
-  font-family:"Cormorant Garamond",serif;
-  font-size:clamp(26px,5vw,60px);font-weight:300;letter-spacing:0.28em;
-  text-transform:uppercase;color:var(--white);margin-top:6px;
+  font-family:"Cinzel",serif;
+  font-size:clamp(28px,5vw,68px);font-weight:400;letter-spacing:0.15em;
+  text-transform:uppercase;
+  color:#E8C97A;
+  margin-top:0;margin-bottom:4px;
   display:flex;justify-content:center;gap:0;overflow:hidden;
 }
 .hero-name .letter{
   display:inline-block;
+  color:#E8C97A;
   animation:letterDrop 0.8s cubic-bezier(0.23,1,0.32,1) both;
   opacity:0;
 }
 
-.hero-rule{
-  display:flex;align-items:center;justify-content:center;gap:18px;
-  margin:28px auto;animation:fadeUp 1.2s ease 1.4s both;
+.hero-sub-accent{
+  display:block;width:0;height:2px;
+  background:linear-gradient(90deg,var(--gold),var(--gold-l),var(--gold));
+  margin:0 auto 20px;
+  animation:expandBar 1s ease 2.4s both;
 }
+@keyframes expandBar{from{width:0}to{width:min(400px,60%)}}
+
 .hero-rule span{display:block;height:1px;width:72px;background:linear-gradient(90deg,transparent,var(--gold),transparent);}
 .hero-rule em{color:var(--gold);font-size:12px;font-style:normal;}
 .hero-sub{
-  font-size:12px;font-weight:300;letter-spacing:0.3em;text-transform:uppercase;
-  color:var(--muted);margin-bottom:16px;animation:fadeUp 1.2s ease 1.5s both;
+  font-family:"Cormorant Garamond",serif;
+  font-size:clamp(18px,3vw,38px);font-weight:300;letter-spacing:0.12em;
+  color:var(--white);margin-bottom:20px;
+  animation:fadeUp 1.2s ease 1.5s both;
+  overflow:hidden;
+}
+.hero-sub .sub-word{
+  display:inline-block;
+  opacity:0;
+  animation:wordSlide 0.7s cubic-bezier(0.23,1,0.32,1) both;
 }
 .hero-motto{
   font-family:"IM Fell English",serif;font-style:italic;
@@ -290,6 +299,10 @@ footer{background:var(--deep);border-top:1px solid rgba(201,168,76,0.12);padding
 @keyframes fadeDown{from{opacity:0;transform:translateY(-20px)}to{opacity:1;transform:translateY(0)}}
 @keyframes fadeUp{from{opacity:0;transform:translateY(30px)}to{opacity:1;transform:translateY(0)}}
 @keyframes scrollPulse{0%,100%{opacity:1}50%{opacity:0.2}}
+@keyframes wordSlide{
+  0%{opacity:0;transform:translateY(40px);}
+  100%{opacity:1;transform:translateY(0);}
+}
 @keyframes letterDrop{
   0%{opacity:0;transform:translateY(-60px) rotateX(90deg);}
   60%{opacity:1;transform:translateY(4px) rotateX(-5deg);}
@@ -384,10 +397,11 @@ footer{background:var(--deep);border-top:1px solid rgba(201,168,76,0.12);padding
     <canvas id="stars"></canvas>
     <div class="hero-grid"></div>
     <div class="hero-content">
-      <span class="hero-year">2026</span>
       <div class="hero-name" id="hero-name-anim"></div>
-      <div class="hero-rule"><span></span><em>◆</em><span></span></div>
-      <p class="hero-sub" id="hero-sub">Uluslararası Multidisipliner Bilim Kongresi</p>
+      <div id="hero-sub-wrap">
+        <p class="hero-sub" id="hero-sub"></p>
+        <span class="hero-sub-accent"></span>
+      </div>
       <p class="hero-motto" id="hero-motto">“Beşeri Bilimlerden Uygulamalı Bilimlere:<br>Evrensel Bilgi Köprüsü”</p>
       <div class="hero-hybrid">
         <span class="hi" id="h-inperson">🏛 Yüz Yüze</span>
@@ -769,7 +783,7 @@ const T = {
     'm-publication':'Yayın','m-contact':'İletişim',
     // HERO
     'hero-badge':'Holistence Academy · Uluslararası Kongre · 2026',
-    'hero-name-text':'HOLİSTENCE',
+    'hero-name-text':'Holistence2026',
     'hero-sub':'Uluslararası Multidisipliner Bilim Kongresi',
     'hero-motto':'“Beşeri Bilimlerden Uygulamalı Bilimlere:<br>Evrensel Bilgi Köprüsü”',
     'h-inperson':'🏛 Yüz Yüze','h-online':'💻 Çevrimiçi','h-hybrid':'🌍 Hibrit Kongre',
@@ -861,7 +875,7 @@ const T = {
     'm-submission':'Call for Papers','m-speakers':'Speakers','m-program':'Program',
     'm-publication':'Publication','m-contact':'Contact',
     'hero-badge':'Holistence Academy · International Congress · 2026',
-    'hero-name-text':'HOLISTENCE',
+    'hero-name-text':'Holistence2026',
     'hero-sub':'International Multidisciplinary Science Congress',
     'hero-motto':'“From Humanities to Applied Sciences:<br>The Universal Bridge of Knowledge”',
     'h-inperson':'🏛 In-Person','h-online':'💻 Online','h-hybrid':'🌍 Hybrid Congress',
@@ -951,6 +965,8 @@ function setLang(lang) {
     const el = document.getElementById(id);
     if (el) el.innerHTML = d[id];
   });
+  // Rebuild animated hero-sub words
+  buildHeroSub(d['hero-sub']);
   // Rebuild animated letters for hero name
   buildHeroName(d['hero-name-text']);
 }
@@ -967,6 +983,25 @@ function buildHeroName(word) {
     // delay: each letter staggers, starting after year/logo animations
     span.style.animationDelay = (0.6 + i * 0.07) + 's';
     container.appendChild(span);
+  });
+}
+
+// ════ HERO SUB ANIMATION ════
+function buildHeroSub(text) {
+  const el = document.getElementById('hero-sub');
+  if (!el) return;
+  el.innerHTML = '';
+  // Split into words, animate each
+  const words = text.split(' ');
+  words.forEach((word, i) => {
+    const span = document.createElement('span');
+    span.className = 'sub-word';
+    span.textContent = word;
+    span.style.animationDelay = (1.5 + i * 0.12) + 's';
+    el.appendChild(span);
+    if (i < words.length - 1) {
+      el.appendChild(document.createTextNode(' '));
+    }
   });
 }
 
@@ -1039,8 +1074,9 @@ window.addEventListener('scroll',()=>{
 });
 
 // ════ INIT ════
-buildHeroName('HOLİSTENCE');
+buildHeroName('Holistence2026');
 document.getElementById('nav-home').classList.add('active');
+buildHeroSub('Uluslararası Multidisipliner Bilim Kongresi');
 </script>
 </body>
 </html>
